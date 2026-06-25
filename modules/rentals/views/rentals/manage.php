@@ -1,0 +1,9 @@
+<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+<?php $rentals_route = $this->uri->segment(2) ?: 'rentals'; ?>
+<?php init_head(); ?>
+<div id="wrapper"><div class="content"><div class="panel_s"><div class="panel-body">
+<h4><?php echo html_escape($title); ?></h4>
+<?php if (rentals_check_license(false)) { ?><a href="<?php echo admin_url($rentals_route . '/form'); ?>" class="btn btn-primary m-bottom-15"><?php echo _l('new_record'); ?></a><?php } ?>
+<table class="table dt-table"><thead><tr><th><?php echo _l('id'); ?></th><th><?php echo _l('contract_reference'); ?></th><th><?php echo _l('clientid'); ?></th><th><?php echo _l('property_id'); ?></th><th><?php echo _l('unit_id'); ?></th><th><?php echo _l('start_date'); ?></th><th><?php echo _l('end_date'); ?></th><th><?php echo _l('monthly_price'); ?></th><th><?php echo _l('status'); ?></th><th><?php echo _l('actions'); ?></th></tr></thead><tbody>
+<?php foreach ($items as $item) { ?><tr><td><?php echo html_escape($item['id'] ?? ''); ?></td><td><?php echo html_escape($item['contract_reference'] ?? ''); ?></td><td><?php echo html_escape($item['clientid'] ?? ''); ?></td><td><?php echo html_escape($item['property_id'] ?? ''); ?></td><td><?php echo html_escape($item['unit_id'] ?? ''); ?></td><td><?php echo html_escape($item['start_date'] ?? ''); ?></td><td><?php echo html_escape($item['end_date'] ?? ''); ?></td><td><?php echo html_escape($item['monthly_price'] ?? ''); ?></td><td><?php echo html_escape($item['status'] ?? ''); ?></td><td><a href="<?php echo admin_url($rentals_route . '/form/' . $item['id']); ?>" class="btn btn-default btn-icon"><i class="fa fa-pencil"></i></a></td></tr><?php } ?>
+</tbody></table></div></div></div></div><?php init_tail(); ?>

@@ -1,0 +1,2 @@
+<?php defined('BASEPATH') or exit('No direct script access allowed');
+class Rentals_license_model extends App_Model { public function activate($key){ rentals_license_log('activation_attempt',$key); $uuid=rentals_get_or_create_installation_uuid(); $response=rentals_validate_license_remote($key,$uuid); if(!empty($response['success']) && rentals_store_license_response($response,$key)){ return true; } rentals_license_log('activation_failed',$key,$response['message'] ?? 'invalid'); return false; } }
