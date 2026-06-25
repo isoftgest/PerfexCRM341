@@ -20,6 +20,7 @@ $CI->load->helper('rentals/rentals');
 
 hooks()->add_action('admin_init', 'rentals_register_permissions');
 hooks()->add_action('admin_init', 'rentals_init_menu_items');
+// El guard queda registrado, pero solo bloquea si la opción rentals_license_enforced está activa.
 hooks()->add_action('app_admin_head', 'rentals_license_route_guard');
 
 function rentals_activation_hook()
@@ -65,6 +66,9 @@ function rentals_init_menu_items()
 
 function rentals_license_route_guard()
 {
+    // Licencia desactivada temporalmente: no redirige hasta que se active rentals_license_enforced.
+    if (!rentals_license_is_enforced()) { return; }
+
     $CI=&get_instance();
     $segment = $CI->uri->segment(2);
     $routes = ['rentals','rental_properties','rental_units','rental_payments','rental_deposits','rental_expenses','rental_reports'];

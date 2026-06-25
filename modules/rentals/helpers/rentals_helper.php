@@ -7,6 +7,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
 define('RENTALS_LICENSE_GRACE_DAYS', 7);
 define('RENTALS_LICENSE_ENDPOINT_OPTION', 'rentals_license_endpoint');
 define('RENTALS_DEFAULT_LICENSE_ENDPOINT', 'https://licencias.tudominio.com/api/validate');
+define('RENTALS_LICENSE_ENFORCED_OPTION', 'rentals_license_enforced');
+
+
+function rentals_license_is_enforced()
+{
+    // Licencia temporalmente desactivada por configuración: el módulo queda libre hasta preparar la API externa.
+    if (!function_exists('get_option')) {
+        return false;
+    }
+
+    return (string) get_option(RENTALS_LICENSE_ENFORCED_OPTION) === '1';
+}
 
 function rentals_table($name)
 {
@@ -143,6 +155,12 @@ function rentals_get_or_create_installation_uuid()
 
 function rentals_check_license($attempt_remote = true)
 {
+    // Mientras `rentals_license_enforced` no sea `1`, no se bloquea ninguna funcionalidad.
+    // Para reactivar la licencia basta con poner esa opción a `1` cuando la API esté lista.
+    if (!rentals_license_is_enforced()) {
+        return true;
+    }
+
     $row = rentals_get_license_row();
     if (!$row || $row->license_status !== 'active') return false;
     if ($row->server_fingerprint !== rentals_get_server_fingerprint()) { rentals_license_log('fingerprint_mismatch',$row->license_key,_l('rentals_license_installation_mismatch')); return false; }

@@ -28,5 +28,6 @@ rentals_create_table('rental_expenses', "CREATE TABLE `" . db_prefix() . "rental
 
 if (function_exists('add_option')) {
     add_option('rentals_license_endpoint', 'https://licencias.tudominio.com/api/validate');
+    add_option('rentals_license_enforced', '0');
     add_option('rentals_default_due_day', '1');
 }
