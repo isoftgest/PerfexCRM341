@@ -52,15 +52,21 @@ function rentals_init_menu_items()
     if (!rentals_user_can_any()) { return; }
     $CI->app_menu->add_sidebar_menu_item('rentals', ['name'=>_l('rentals'),'href'=>'#','icon'=>'fa fa-home','position'=>35]);
     $items = [
-        ['rentals-main','rentals','rentals','view'],['rental-properties','rental_properties','rentals_properties','view'],['rental-units','rental_units','rentals_units','view'],['rental-payments','rental_payments','rentals_payments','view'],['rental-deposits','rental_deposits','rentals_deposits','view'],['rental-expenses','rental_expenses','rentals_expenses','view'],['rental-reports','rental_reports','rentals_reports','view']
+        ['rentals-main','rentals','rentals','view','rentals'],
+        ['rental-properties','rental_properties','rentals_properties','view','rentals/properties'],
+        ['rental-units','rental_units','rentals_units','view','rentals/units'],
+        ['rental-payments','rental_payments','rentals_payments','view','rentals/payments'],
+        ['rental-deposits','rental_deposits','rentals_deposits','view','rentals/deposits'],
+        ['rental-expenses','rental_expenses','rentals_expenses','view','rentals/expenses'],
+        ['rental-reports','rental_reports','rentals_reports','view','rentals/reports']
     ];
     foreach ($items as $item) {
         if (is_admin() || has_permission($item[2], '', $item[3]) || ($item[2]==='rentals' && has_permission('rentals','','view_own'))) {
-            $CI->app_menu->add_sidebar_children_item('rentals', ['slug'=>$item[0],'name'=>_l($item[1]),'href'=>admin_url($item[1] === 'rentals' ? 'rentals' : $item[1]),'position'=>10]);
+            $CI->app_menu->add_sidebar_children_item('rentals', ['slug'=>$item[0],'name'=>_l($item[1]),'href'=>admin_url($item[4]),'position'=>10]);
         }
     }
     if (is_admin() || has_permission('rentals_license', '', 'manage')) {
-        $CI->app_menu->add_sidebar_children_item('rentals', ['slug'=>'rentals-license','name'=>_l('rentals_license'),'href'=>admin_url('rentals_license'),'position'=>90]);
+        $CI->app_menu->add_sidebar_children_item('rentals', ['slug'=>'rentals-license','name'=>_l('rentals_license'),'href'=>admin_url('rentals/license'),'position'=>90]);
     }
 }
 
